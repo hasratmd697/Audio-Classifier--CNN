@@ -6,7 +6,7 @@
 
 In this project, I trained and deployed an audio classification Convolutional Neural Network (CNN) from scratch using PyTorch. The model is capable of classifying environmental sounds, such as dog barks and bird chirps, from audio files. I implemented advanced techniques including Residual Networks (ResNet), data augmentation through audio mixing, and Mel Spectrogram transformations to create a robust training pipeline. To make the model accessible and interactive, I built a full-stack web dashboard using Next.js, React, and Tailwind CSS (following the T3 Stack architecture). The dashboard allows users to upload audio files and visualize how the model processes and interprets them through its internal layers. All tools and services used in this project are open-source and freely available.
 
-## Features:
+## Features
 
 - 🧠 Deep Audio CNN for sound classification
 - 🧱 ResNet-style architecture with residual blocks
@@ -72,8 +72,6 @@ pip install -r requirements.txt
 
 ### Backend (Modal Inference Server)
 
-#### Option 1: Deploy to Modal (Recommended)
-
 ```bash
 modal token new    # Authenticate with Modal (first time only)
 modal deploy main.py
@@ -81,12 +79,6 @@ modal deploy main.py
 
 The endpoint will be available at:
 `https://<your-username>--audio-cnn-inference-audioclassifier-inference.modal.run`
-
-#### Option 2: Run Locally with Modal
-
-```bash
-modal serve main.py
-```
 
 ### Frontend (Next.js Dashboard)
 
@@ -110,13 +102,6 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Build for Production
-
-```bash
-npm run build
-npm run start
-```
-
 ## Training the Model
 
 To train the CNN model on the ESC-50 dataset:
@@ -138,28 +123,8 @@ Audio-Classifier--CNN/
 │   │   ├── app/               # Next.js app router
 │   │   ├── components/        # React components
 │   │   └── styles/            # Global CSS
-│   ├── package.json
-│   └── render.yaml            # Render deployment config
+│   └── package.json
 └── tensorboard_logs/          # Training logs
-```
-
-## Deployment
-
-### Frontend on Render (Free Tier)
-
-1. Push your code to GitHub
-2. Go to [Render Dashboard](https://dashboard.render.com)
-3. Create a new Web Service
-4. Set **Root Directory** to: `audio-cnn-visualisation`
-5. Configure:
-   - **Build Command:** `npm install && npm run build`
-   - **Start Command:** `npm run start`
-   - **Plan:** Free
-
-### Backend on Modal
-
-```bash
-modal deploy main.py
 ```
 
 ## Technologies Used

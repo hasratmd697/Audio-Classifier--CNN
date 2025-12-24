@@ -65,8 +65,8 @@ class ESC50Dataset(Dataset):
         row = self.metadata.iloc[idx]
         audio_path = self.data_dir / "audio" / row['filename']
 
-        # Load audio waveform
-        waveform, sample_rate = torchaudio.load(audio_path)
+        # Load audio waveform using soundfile (avoids torchcodec dependency)
+        waveform, sample_rate = load_audio(audio_path)
 
         # Convert to mono if stereo
         if waveform.shape[0] > 1:
@@ -93,6 +93,19 @@ def mixup_criterion(criterion, pred, y_a, y_b, lam):
 
 
 # Training function to be run remotely on Modal with GPU
+# Helper function to load audio using soundfile (avoids torchcodec dependency)
+def load_audio(path):
+    import soundfile as sf
+    data, sr = sf.read(str(path))
+    # Convert to torch tensor and add channel dimension if mono
+    waveform = torch.from_numpy(data).float()
+    if waveform.ndim == 1:
+        waveform = waveform.unsqueeze(0)
+    elif waveform.ndim == 2:
+        waveform = waveform.T  # soundfile returns (samples, channels), need (channels, samples)
+    return waveform, sr
+
+
 @app.function(image=image, gpu="A10G", volumes={"/data": volume, "/models": model_volume}, timeout=60 * 60 * 3)
 def train():
     from datetime import datetime
